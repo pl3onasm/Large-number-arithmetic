@@ -30,7 +30,7 @@ char *subtract(char *a, int lb, char *b, int *neg){
   return c; 
 } 
 
-void divide(char *a, int lb, char *b, char ***res){
+void partDivide(char *a, int lb, char *b, char ***res){
   char i = '0'; int neg=0; char *diff, *prev = a; 
   while(1) {
     diff = subtract(prev, lb, b,&neg);
@@ -66,7 +66,7 @@ int isZero(char *a){
   return i == strlen(a);
 }
 
-char **divide_strings(char *a, char *b){
+char **divide(char *a, char *b){
   char **res = malloc(2 * sizeof(char *));
   a = strdup(a); b = strdup(b);
   removeZeros(a); removeZeros(b); 
@@ -84,13 +84,13 @@ char **divide_strings(char *a, char *b){
     res[0] = b; res[1] = a;   
     return res;
   }  
-  char *buf, *qu; int ind=0, size=1, q=0;  
+  char *part, *qu; int ind=0, size=1, q=0;  
   qu = malloc((la+1)*sizeof(char)); 
   
   while (ind<la) {
-    buf = slice(a, size);
-    if (size >=lb && compare(buf,b)>=0){
-      divide (buf, lb, b, &res);
+    part = slice(a, size);
+    if (size >=lb && compare(part,b)>=0){
+      partDivide (part, lb, b, &res);
       qu[q++] = res[0][0]; ind++; 
       adjust(&a,strlen(a),res[1]); removeZeros(res[1]);
       if (isZero(res[1])) size = 1; 

@@ -30,7 +30,7 @@ char *subtract(char *a, int lb, char *b, int *neg){
   return c; 
 } 
 
-void partDivide(char *a, int lb, char *b, char ***res){
+void partialDivide(char *a, int lb, char *b, char ***res){
   char i = '0'; int neg=0; char *diff, *prev = a; 
   while(1) {
     diff = subtract(prev, lb, b,&neg);
@@ -90,7 +90,7 @@ char **divide(char *a, char *b){
   while (ind<la) {
     part = slice(a, size);
     if (size >=lb && compare(part,b)>=0){
-      partDivide (part, lb, b, &res);
+      partialDivide (part, lb, b, &res);
       qu[q++] = res[0][0]; ind++; 
       adjust(&a,strlen(a),res[1]); removeZeros(res[1]);
       if (isZero(res[1])) size = 1; 

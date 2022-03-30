@@ -180,13 +180,8 @@ char *multiply(char *a, char *b){
 int powr(int n, int exp) {
   int p=1;
   while (exp!=0)
-    if (exp%2 == 0) {
-      n *= n;
-      exp /= 2;
-    } else {
-      p *= n;
-      exp--;
-    }
+    if (exp%2 == 0) {n *= n; exp /= 2;} 
+    else {p *= n; exp--;}
   return p;
 }
 

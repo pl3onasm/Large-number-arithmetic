@@ -78,8 +78,7 @@ char *adjust(char *a, char* r){
   while(r[i] == '0') i++;
   for (; i<lr; ++i) arr[j++] = r[i];
   for (; j<la; ++j) arr[j] = a[i++];
-  arr[j] = '\0';
-  free(a); 
+  arr[j] = '\0'; 
   return arr; 
 }
 
@@ -88,9 +87,8 @@ int isZero(char *a){
   return i == strlen(a);
 }
 
-char **divide(char *x, char *y){
+char **divide(char *a, char *b){
   char **res = malloc(2 * sizeof(char *));
-  char *a=strdup(x); char *b=strdup(y);
   delZeros(a); delZeros(b); 
   int la = strlen(a), lb = strlen(b); 
   if (isZero(b)) { 
@@ -117,15 +115,15 @@ char **divide(char *x, char *y){
       a= adjust(a,res[1]); delZeros(res[1]);
       if (isZero(res[1])) size = 1; 
       else size = strlen(res[1])+1;  
-      //free(part); 
+      free(part); 
       continue; 
     }
-    //free(part); 
+    free(part); 
     qu[q++] = '0';
     size++; ind++;  
   } 
   qu[q] = '\0'; delZeros(qu); 
-  if (!isZero(a)) {res[1] = a;}
+  if (!isZero(a)) {free(res[1]); res[1] = a;}
   res[0] = qu; delZeros(res[1]);
   return res; 
 }
@@ -170,20 +168,20 @@ char *add(char *a, char *b){
 char *multiply(char *a, char *b){
   delZeros(a); delZeros(b);
   int la = strlen(a), lb = strlen(b); 
-  char *res = calloc(la+lb+1,sizeof(char)); 
-  for (int i=0; i<la+lb; ++i) res[i] += '0';
+  char *c = calloc(la+lb+1,sizeof(char)); 
+  for (int i=0; i<la+lb; ++i) c[i] += '0';
   for (int i=la-1; i>=0; --i){
     int carry = 0; 
-    for (int k=lb-1; k>=0; --k){
-      res[i+k] += (a[i]-'0')*(b[k]-'0') + carry; 
-      carry = res[i+k]/10; res[i+k+1] %= 10; 
+    for (int j=lb-1; j>=0; --j){
+      c[i+j] += (a[i]-'0')*(b[j]-'0') + carry; 
+      carry = c[i+j]/10; c[i+j+1] %= 10; 
     }
-    res[i+lb] += carry; 
+    c[i+lb] += carry; 
   }
-  for (int i=0; i<la+lb; ++i) printf("%c",res[i]);
-  res[la+lb] = '\0';
+  for (int i=0; i<la+lb; ++i) printf("%c",c[i]);
+  c[la+lb] = '\0';
   //free(a); //free(b); 
-  return res; 
+  return c; 
 }
 
 char *power(char *a, char *exp){
@@ -215,7 +213,7 @@ int main(int argc, char *argv[]) {
     case '+': printf("%s\n", add(a,b)); break;
     case '-': printf("%s\n", subtract(a,b)); break;
     case '*': printf("%s\n", multiply(a,b)); break;
-    case '/': printf("%s\n, %s\n", divide(a,b)[0], divide(a,b)[1]); break;
+    case '/': printf("q: %s\nr: %s\n", divide(a,b)[0], divide(a,b)[1]); break;
     case '^': printf("%s\n", power(a,b)); break;
     default: printf("Wrong operation!\n"); break;
   } 

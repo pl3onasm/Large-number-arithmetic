@@ -26,7 +26,7 @@ char *negate(char *a){
   char* b = calloc(la+2, sizeof(char));
   for (i=la; i>=1; --i) b[i] = a[i-1];
   b[0] = '-'; b[la+1] = '\0';
-  //free(a);
+  free(a);
   return b; 
 }
 
@@ -131,20 +131,22 @@ char **divide(char *x, char *y){
 }
 
 char *subtract(char *a, char *b){
-  int neg= 0; 
   delZeros(a); delZeros(b);
+  int neg= 0; 
   if (compare(a,b)<0) {swap(&a,&b); neg = 1;}
-  
-  int carry= 0, j= strlen(b)-1; 
-  for(int i=strlen(a)-1; i>=0; --i){
-    if (j>=0) a[i] += '0' - b[j--] - carry; 
-    else a[i] -= carry;
-    if (a[i] < '0'){a[i] += 10; carry=1;}
+  int la = strlen(a), lb = strlen(b); 
+  char *c = calloc(strlen(a)+1,sizeof(char));
+  int carry= 0, j= lb-1; 
+  for(int i=la-1; i>=0; --i){
+    if (j>=0) c[i] = a[i] + '0' - b[j--] - carry; 
+    else c[i] = a[i] - carry;
+    if (c[i] < '0'){c[i] += 10; carry=1;}
     else carry = 0;
   }
-  if (neg) a = negate(a); 
-  //free(b);  printf("c[%d] = %c\n", i+1, c[i+1]);
-  return a; 
+  c[la]='\0'; delZeros(c);
+  if (neg) c = negate(c); 
+  free(a); free(b); 
+  return c; 
 } 
 
 char *add(char *a, char *b){
@@ -161,7 +163,7 @@ char *add(char *a, char *b){
   }
   if (carry) {c[0] = '1'; c[la+1] = '\0';}
   else {c[0] = '0'; delZeros(c);}
-  free(b); 
+  free(a); free(b); 
   return c; 
 }
 

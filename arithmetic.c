@@ -154,7 +154,7 @@ char *add(char *a, char *b){
   char *c = calloc(strlen(a)+2,sizeof(char));
   int carry= 0, j= lb-1, i=0; 
   for (i=la-1; i>=0; --i){
-    if (j>=0) {c[i+1] = a[i] + b[j] - '0' + carry; j--;}
+    if (j>=0) {c[i+1] = a[i] + b[j--] - '0' + carry;}
     else c[i+1] = a[i] + carry; 
     if (c[i+1] > '9') {c[i+1] -= 10; carry=1;}
     else carry = 0;
@@ -208,8 +208,6 @@ int main(int argc, char *argv[]) {
   scanf("%c\n", &op); 
   readInput(&a);  
   readInput(&b); 
-  printf("%s\n", a);
-  printf("%s\n", b);
   
   switch(op){
     case '+': printf("%s\n", add(a,b)); break;

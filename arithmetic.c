@@ -177,17 +177,16 @@ char *multiply(char *a, char *b){
   return c; 
 }
 
-int powr(int num, int exp) {
+int powr(int n, int exp) {
   int p=1;
-  while (exp!=0) {
+  while (exp!=0)
     if (exp%2 == 0) {
-      num *= num;
+      n *= n;
       exp /= 2;
     } else {
-      p *= num;
+      p *= n;
       exp--;
     }
-  }
   return p;
 }
 
@@ -203,9 +202,7 @@ char *power(char *a, char *exp){
   int la = strlen(a); 
   int lim = toDec(exp);
   char *c = strdup(a); 
-  for (int i=0; i<lim; ++i) {
-    c = multiply(c,c);
-  }
+  for (int i=0; i<lim; ++i) c = multiply(c,c);
   return c; 
 }
 

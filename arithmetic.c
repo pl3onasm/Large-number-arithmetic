@@ -143,7 +143,6 @@ char *subtract(char *a, char *b){
   }
   c[la]='\0'; delZeros(c);
   if (neg) c = negate(c); 
-  free(a); free(b); 
   return c; 
 } 
 
@@ -161,7 +160,6 @@ char *add(char *a, char *b){
   }
   if (carry) {c[0] = '1'; c[la+1] = '\0';}
   else {c[0] = '0'; delZeros(c);}
-  free(a); free(b); 
   return c; 
 }
 
@@ -180,7 +178,6 @@ char *multiply(char *a, char *b){
   }
   for (int i=0; i<la+lb; ++i) printf("%c",c[i]);
   c[la+lb] = '\0';
-  //free(a); //free(b); 
   return c; 
 }
 
@@ -217,5 +214,6 @@ int main(int argc, char *argv[]) {
     case '^': printf("%s\n", power(a,b)); break;
     default: printf("Wrong operation!\n"); break;
   } 
+  free(a); free(b); 
   return 0;
 }

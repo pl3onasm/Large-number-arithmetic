@@ -191,7 +191,7 @@ char *power(char *a, char *exp){
 void readInput(char **a){
   char n; int index = 0, cap = 128;
   char *arr = calloc(cap,sizeof(char)); 
-  while (scanf("%c", &n) && n != '\n' && n != EOF && n!= ' '){
+  while (scanf("%c", &n) && n != '\n' && n != EOF){
     index++;
     if (index % cap == 0) {
       arr = realloc(arr, 2*index*sizeof(char));

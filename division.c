@@ -63,7 +63,7 @@ int isZero(char *a){
   return i == strlen(a);
 }
 
-char **divide_strings(char *a, char *b){
+char **divide(char *a, char *b){
   char **res = malloc(2 * sizeof(char *));
   a = strdup(a); b = strdup(b);
   delZeros(a); delZeros(b); 

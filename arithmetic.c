@@ -167,17 +167,13 @@ char *multiply(char *a, char *b){
   delZeros(a); delZeros(b);
   int la = strlen(a), lb = strlen(b); 
   char *c = calloc(la+lb+1,sizeof(char)); 
-  for (int i=0; i<la+lb; ++i) c[i] += '0';
-  for (int i=la-1; i>=0; --i){
-    int carry = 0; 
+  for (int i=la-1; i>=0; --i)
     for (int j=lb-1; j>=0; --j){
-      c[i+j] += (a[i]-'0')*(b[j]-'0') + carry; 
-      carry = c[i+j]/10; c[i+j+1] %= 10; 
+      int s = c[i+j+1] + (a[i]-'0')*(b[j]-'0');  
+      c[i+j+1] = s%10; c[i+j] += s/10; 
     }
-    c[i+lb] += carry; 
-  }
-  for (int i=0; i<la+lb; ++i) printf("%c",c[i]);
-  c[la+lb] = '\0';
+  for (int i=0; i<la+lb; ++i) c[i] += '0';
+  c[la+lb] = '\0'; delZeros(c); 
   return c; 
 }
 
@@ -212,7 +208,7 @@ int main(int argc, char *argv[]) {
     case '*': printf("%s\n", multiply(a,b)); break;
     case '/': printf("q: %s\nr: %s\n", divide(a,b)[0], divide(a,b)[1]); break;
     case '^': printf("%s\n", power(a,b)); break;
-    default: printf("Wrong operation!\n"); break;
+    default: printf("Incorrect operation!\n"); break;
   } 
   free(a); free(b); 
   return 0;

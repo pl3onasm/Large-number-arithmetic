@@ -3,7 +3,7 @@
 #include <stdlib.h>
 extern char* strdup(const char*);
 
-void removeZeros(char *a){
+void delZeros(char *a){
   int i=0, l=0, len = strlen(a);
   while(a[l] == '0') l++; 
   if (l == len) {a[0] = '0'; a[1] = '\0'; return;}
@@ -18,7 +18,7 @@ int compare(char *a, char *b){
   return strcmp(a,b);
 }
 
-char *subtract(char *a, int lb, char *b, int *neg){
+char *partSubtract(char *a, int lb, char *b, int *neg){
   int carry = 0, j=lb-1; char *c = calloc((strlen(a)+2),sizeof(char)); 
   for(int i=strlen(a)-1; i>=0; --i){
     if (j>=0) c[i] = (a[i] + '0' - b[j--] - carry); 
@@ -30,12 +30,12 @@ char *subtract(char *a, int lb, char *b, int *neg){
   return c; 
 } 
 
-void partialDivide(char *a, int lb, char *b, char ***res){
+void partDivide(char *a, int lb, char *b, char ***res){
   char i = '0'; int neg=0; char *diff, *prev = a; 
   while(1) {
-    diff = subtract(prev, lb, b,&neg);
+    diff = partSubtract(prev, lb, b,&neg);
     if (neg) break;
-    prev = diff; i++; 
+    prev = diff; i++;   
   }  
   diff[0] = i; diff[1] = '\0'; 
   (*res)[0] = diff; (*res)[1] = prev;
@@ -47,29 +47,26 @@ char *slice(char *a, int end){
   return sub; 
 }
 
-void adjust(char **a, int la, char* r){
-  int i=0, j=0; 
+char *adjust(char *a, char* r){
+  int i=0, j=0, lr = strlen(r), la = strlen(a); 
+  char *arr = calloc(la+lr+1,sizeof(char));
   while(r[i] == '0') i++;
-  if (i==strlen(r)){
-    for (j=0; j<la-strlen(r); ++j) {(*a)[j] = (*a)[i];i++; }
-    (*a)[j] = '\0'; 
-    return; 
-  } 
-  for (; i<strlen(r); ++i) (*a)[j++] = r[i];
-  for (; j<la; ++j) (*a)[j] = (*a)[i++];
-  (*a)[i] = '\0';
+  for (; i<lr; ++i) arr[j++] = r[i];
+  for (; j<la; ++j) arr[j] = (a)[i++];
+  arr[j] = '\0';
+  free(a); 
+  return arr; 
 }
 
 int isZero(char *a){
-  int i=0;
-  while(a[i] == '0') i++;
+  int i=0; while(a[i] == '0') i++;
   return i == strlen(a);
 }
 
-char **divide(char *a, char *b){
+char **divide_strings(char *a, char *b){
   char **res = malloc(2 * sizeof(char *));
   a = strdup(a); b = strdup(b);
-  removeZeros(a); removeZeros(b); 
+  delZeros(a); delZeros(b); 
   int la = strlen(a), lb = strlen(b); 
   if (isZero(b)) { 
     fprintf(stderr, "Division by zero! Exit.\n");
@@ -89,19 +86,19 @@ char **divide(char *a, char *b){
   
   while (ind<la) {
     part = slice(a, size);
-    if (size >=lb && compare(part,b)>=0){
-      partialDivide (part, lb, b, &res);
+    if (compare(part,b)>=0){
+      partDivide (part, lb, b, &res);
       qu[q++] = res[0][0]; ind++; 
-      adjust(&a,strlen(a),res[1]); removeZeros(res[1]);
+      a= adjust(a,res[1]); delZeros(res[1]);
       if (isZero(res[1])) size = 1; 
       else size = strlen(res[1])+1;  
-      continue; 
+      free(part); continue; 
     }
-    else qu[q++] = '0';
+    free(part); qu[q++] = '0';
     size++; ind++;  
   } 
-  qu[q] = '\0'; removeZeros(qu); 
-  if (!isZero(a)) res[1] = a;
-  res[0] = qu; removeZeros(res[1]);
+  qu[q] = '\0'; delZeros(qu); 
+  if (!isZero(a)) {free(res[1]); res[1] = a;}
+  res[0] = qu; delZeros(res[1]);
   return res; 
 }

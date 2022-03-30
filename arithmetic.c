@@ -227,7 +227,7 @@ int main(int argc, char *argv[]) {
     case '*': printf("%s\n", multiply(a,b)); break;
     case '/': printf("q: %s\nr: %s\n", divide(a,b)[0], divide(a,b)[1]); break;
     case '^': printf("%s\n", power(a,b)); break;
-    default: printf("Incorrect operation!\n"); break;
+    default: printf("Incorrect operator!\n"); break;
   } 
   free(a); free(b); 
   return 0;

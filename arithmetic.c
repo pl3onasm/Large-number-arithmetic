@@ -1,11 +1,11 @@
 /*
- ┌─────────────────────────────────────────────────────────┐
- │  File name: arithmetic.c                                │
- │  Author: David De Potter, pl3onasm@gmail.com            │
- │  License: refer to the license file in this repository  │
- │  Description: enables basic arithmetic with large       │
- │  integers represented as strings                        │ 
- └─────────────────────────────────────────────────────────┘
+  ┌─────────────────────────────────────────────────────────┐
+  │  File name: arithmetic.c                                │
+  │  Author: David De Potter, pl3onasm@gmail.com            │
+  │  License: refer to the license file in this repository  │
+  │  Description: enables basic arithmetic with large       │
+  │  integers represented as strings                        │ 
+  └─────────────────────────────────────────────────────────┘
 */
 
 #include <string.h>
@@ -15,10 +15,10 @@ extern char *strdup(const char *);
 
 void delZeros(char *a){
   int i=0, l=0, len = strlen((a));
-  while((a)[l] == '0') l++; 
-  if (l == len) {(a)[0] = '0'; (a)[1] = '\0'; return;}
-  for (; i< len-l; i++) (a)[i] = (a)[i+l];
-  (a)[i] = '\0';
+  while(a[l] == '0') l++; 
+  if (l == len) {a[0] = '0'; a[1] = '\0'; return;}
+  for (; i< len-l; i++) a[i] = a[i+l];
+  a[i] = '\0';
 }
 
 char *negate(char *a){
@@ -177,8 +177,36 @@ char *multiply(char *a, char *b){
   return c; 
 }
 
+int powr(int num, int exp) {
+  int p=1;
+  while (exp!=0) {
+    if (exp%2 == 0) {
+      num *= num;
+      exp /= 2;
+    } else {
+      p *= num;
+      exp--;
+    }
+  }
+  return p;
+}
+
+int toDec(char *a){
+  int res = 0; 
+  for (int i=0; i<strlen(a); ++i) 
+    res += (a[i]-'0')*powr(10,strlen(a)-i-1);
+  return res; 
+}
+
 char *power(char *a, char *exp){
   delZeros(a); delZeros(exp);
+  int la = strlen(a); 
+  int lim = toDec(exp);
+  char *c = strdup(a); 
+  for (int i=0; i<lim; ++i) {
+    c = multiply(c,c);
+  }
+  return c; 
 }
 
 void readInput(char **a){

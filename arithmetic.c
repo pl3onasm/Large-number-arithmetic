@@ -32,8 +32,7 @@ char *negate(char *a){
 
 void swap(char **a, char **b){
   char *temp = *a;
-  *a = *b;
-  *b = temp;
+  *a = *b; *b = temp;
 }  
 
 int compare(char *a, char *b){
@@ -96,10 +95,8 @@ char **divide(char *a, char *b){
     exit(EXIT_FAILURE);
   }
   if (compare(a,b)<0){
-    if (la==1 && a[0] == '1') {
-      res[0] = a; res[1] = b; 
-      return res; 
-    }
+    if (la==1 && a[0] == '1') 
+      {res[0] = a; res[1] = b; return res;}
     b[0]='0'; b[1]='\0';  
     res[0] = b; res[1] = a;   
     return res;
@@ -112,14 +109,12 @@ char **divide(char *a, char *b){
     if (compare(part,b)>=0){
       partDivide (part, lb, b, &res);
       qu[q++] = res[0][0]; ind++; 
-      a= adjust(a,res[1]); delZeros(res[1]);
+      a = adjust(a,res[1]); delZeros(res[1]);
       if (isZero(res[1])) size = 1; 
       else size = strlen(res[1])+1;  
-      free(part); 
-      continue; 
+      free(part); continue; 
     }
-    free(part); 
-    qu[q++] = '0';
+    free(part); qu[q++] = '0';
     size++; ind++;  
   } 
   qu[q] = '\0'; delZeros(qu); 

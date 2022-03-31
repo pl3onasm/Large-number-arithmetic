@@ -103,8 +103,6 @@ char **divide(char *a, char *b){
   }  
   char *part, *qu; int ind=0, size=1, q=0;  
   qu = malloc((lc+1)*sizeof(char)); 
-   
-  
   while (ind<lc) {
     part = slice(c, size);
     if (compare(part,b)>=0){

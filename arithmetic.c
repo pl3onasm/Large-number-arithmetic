@@ -77,7 +77,7 @@ char *adjust(char *a, char* r){
   while(r[i] == '0') i++;
   for (; i<lr; ++i) arr[j++] = r[i];
   for (; j<la; ++j) arr[j] = a[i++];
-  arr[j] = '\0'; 
+  arr[j] = '\0'; free(a); 
   return arr; 
 }
 
@@ -88,28 +88,29 @@ int isZero(char *a){
 
 char **divide(char *a, char *b){
   char **res = malloc(2 * sizeof(char *));
-  delZeros(a); delZeros(b); 
-  int la = strlen(a), lb = strlen(b); 
+  char *c=strdup(a); delZeros(c); delZeros(b); 
+  int lc = strlen(c), lb = strlen(b); 
   if (isZero(b)) { 
     fprintf(stderr, "Division by zero! Exit.\n");
     exit(EXIT_FAILURE);
   }
-  if (compare(a,b)<0){
-    if (la==1 && a[0] == '1') 
-      {res[0] = a; res[1] = b; return res;}
+  if (compare(c,b)<0){
+    if (lc==1 && c[0] == '1') 
+      {res[0] = c; res[1] = b; return res;}
     b[0]='0'; b[1]='\0';  
-    res[0] = b; res[1] = a;   
+    res[0] = b; res[1] = c;   
     return res;
   }  
   char *part, *qu; int ind=0, size=1, q=0;  
-  qu = malloc((la+1)*sizeof(char)); 
+  qu = malloc((lc+1)*sizeof(char)); 
+   
   
-  while (ind<la) {
-    part = slice(a, size);
+  while (ind<lc) {
+    part = slice(c, size);
     if (compare(part,b)>=0){
       partDivide (part, lb, b, &res);
       qu[q++] = res[0][0]; ind++; 
-      a = adjust(a,res[1]); delZeros(res[1]);
+      c = adjust(c,res[1]); delZeros(res[1]);
       if (isZero(res[1])) size = 1; 
       else size = strlen(res[1])+1;  
       free(part); continue; 
@@ -118,7 +119,7 @@ char **divide(char *a, char *b){
     size++; ind++;  
   } 
   qu[q] = '\0'; delZeros(qu); 
-  if (!isZero(a)) {free(res[1]); res[1] = a;}
+  if (!isZero(c)) {free(res[1]); res[1] = c;}
   res[0] = qu; delZeros(res[1]);
   return res; 
 }

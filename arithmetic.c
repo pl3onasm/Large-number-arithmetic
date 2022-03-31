@@ -55,11 +55,11 @@ char *partSubtract(char *a, int lb, char *b, int *neg){
 } 
 
 void partDivide(char *a, int lb, char *b, char ***res){
-  char i = '0'; int neg=0; char *diff, *prev = a; 
+  char i = '0'; int neg=0; char *diff, *prev = strdup(a); 
   while(1) {
     diff = partSubtract(prev, lb, b,&neg);
     if (neg) break;
-    prev = diff; i++;   
+    free(prev); prev = diff; i++;   
   }  
   diff[0] = i; diff[1] = '\0'; 
   (*res)[0] = diff; (*res)[1] = prev;
@@ -153,7 +153,7 @@ char *add(char *a, char *b){
     if (c[i+1] > '9') {c[i+1] -= 10; carry=1;}
     else carry = 0;
   }
-  if (carry) {c[0] = '1'; c[la+1] = '\0';}
+  if (carry) {c[0] = carry; c[la+1] = '\0';}
   else {c[0] = '0'; delZeros(c);}
   return c; 
 }

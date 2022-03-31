@@ -190,9 +190,10 @@ int toDec(char *a){
 char *power(char *a, char *exp){
   delZeros(a); delZeros(exp);
   int la = strlen(a), lim = toDec(exp);
-  char *c = strdup(a); 
-  for (int i=0; i<lim; ++i) c = multiply(c,c);
-  return c; 
+  char *c = strdup(a), *newc; 
+  for (int i=0; i<lim; ++i) 
+    {newc = multiply(c,c); free(c); c = newc;}
+  return newc; 
 }
 
 void readInput(char **a){

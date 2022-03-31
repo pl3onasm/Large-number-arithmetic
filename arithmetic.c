@@ -211,7 +211,7 @@ void readInput(char **a){
 }
 
 int main(int argc, char *argv[]) {
-  char op, *a, *b, *c, *d; 
+  char op, *a, *b, *c, *d, **e; 
   scanf("%c\n", &op); 
   readInput(&a);  
   readInput(&b); 
@@ -220,10 +220,12 @@ int main(int argc, char *argv[]) {
     case '+': printf("%s\n", c=add(a,b)); break;
     case '-': printf("%s\n", c=subtract(a,b)); break;
     case '*': printf("%s\n", c=multiply(a,b)); break;
-    case '/': printf("q: %s\nr: %s\n", c=divide(a,b)[0], d=divide(a,b)[1]); break;
+    case '/': e=divide(a,b); printf("q: %s\nr: %s\n", \
+              c=divide(a,b)[0], d=divide(a,b)[1]); 
+              free(d); free(e); break;
     case '^': printf("%s\n", c=power(a,b)); break;
     default: printf("Incorrect operator!\n"); break;
   } 
-  free(a); free(b); free(c); free(d); 
+  free(a); free(b); free(c); 
   return 0;
 }

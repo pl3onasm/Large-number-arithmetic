@@ -50,7 +50,7 @@ char *partSubtract(char *a, int lb, char *b, int *neg){
     if (c[i] < '0'){c[i] +=10; carry=1;}
     else carry = 0;
   }
-  if (carry) *neg = 1; 
+  if (carry) *neg = 1;
   return c; 
 } 
 

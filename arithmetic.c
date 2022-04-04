@@ -152,7 +152,7 @@ char *add(char *a, char *b){
     if (c[i+1] > '9') {c[i+1] -= 10; carry=1;}
     else carry = 0;
   }
-  if (carry) {c[0] = carry; c[la+1] = '\0';}
+  if (carry) {c[0] = '1'; c[la+1] = '\0';}
   else {c[0] = '0'; delZeros(c);}
   return c; 
 }
